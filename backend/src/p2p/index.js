@@ -3,7 +3,7 @@ const Websocket = require("ws");
 const MESSAGE_TYPES = {
   chain: "CHAIN",
   transaction: "TRANSACTION",
-  clear_transactions: "CLEAR_TRANSACTIONS",
+  clearTransactions: "CLEAR_TRANSACTIONS",
 };
 
 const P2P_PORT = process.env.P2P_PORT || 5001;
@@ -41,7 +41,7 @@ class P2pServer {
 
   connectSocket(socket) {
     this.sockets.push(socket);
-    console.log("Socket connected");
+    console.log(`Socket connected ${socket.url}`);
 
     this.messageHandler(socket);
 
@@ -58,7 +58,7 @@ class P2pServer {
         case MESSAGE_TYPES.transaction:
           this.transactionPool.updateOrAddTransaction(data.transaction);
           break;
-        case MESSAGE_TYPES.clear_transactions:
+        case MESSAGE_TYPES.clearTransactions:
           this.transactionPool.clear();
           break;
         default:
@@ -86,7 +86,7 @@ class P2pServer {
     this.sockets.forEach((socket) =>
       socket.send(
         JSON.stringify({
-          type: MESSAGE_TYPES.clear_transactions,
+          type: MESSAGE_TYPES.clearTransactions,
         }),
       ),
     );
