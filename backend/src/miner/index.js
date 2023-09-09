@@ -19,6 +19,8 @@ class Miner {
         blockchainWallet: Wallet.blockchainWallet(),
       }),
     );
+
+    console.log(validTransactions);
     // create a block consisting of the valid transactions
     const block = this.blockchain.addBlock(validTransactions);
     // synchronize chains in the peer-to-peer server

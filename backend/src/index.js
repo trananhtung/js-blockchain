@@ -29,6 +29,9 @@ app.get("/transactions", (req, res) => {
 
 app.post("/transact", (req, res) => {
   const { recipient, amount } = req.body;
+  if (typeof amount !== "number") {
+    return res.status(400).json({ error: "amount must be a number" });
+  }
   const transaction = wallet.createTransaction({
     recipient,
     amount,
@@ -37,7 +40,7 @@ app.post("/transact", (req, res) => {
   });
 
   p2pServer.broadcastTransaction(transaction);
-  res.redirect("/transactions");
+  return res.redirect("/transactions");
 });
 
 app.get("/public-key", (req, res) => {

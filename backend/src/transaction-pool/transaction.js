@@ -2,6 +2,8 @@ const { v4: uuid } = require("uuid");
 const { hashSHA256 } = require("../utils/hash");
 const { verifySignature } = require("../utils/key");
 
+const { MINING_REWARD } = require("../../config");
+
 class Transaction {
   constructor() {
     this.id = uuid();
@@ -58,7 +60,7 @@ class Transaction {
   static rewardTransaction({ minerWallet, blockchainWallet }) {
     return Transaction.transactionWithOutputs(blockchainWallet, [
       {
-        amount: blockchainWallet.balance,
+        amount: MINING_REWARD,
         address: minerWallet.publicKey,
       },
     ]);

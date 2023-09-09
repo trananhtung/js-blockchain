@@ -25,7 +25,7 @@ class TransactionPool {
   validTransactions() {
     return this.transactions.filter((transaction) => {
       const outputTotal = transaction.outputs.reduce((total, { amount }) => {
-        return total + Number(amount);
+        return total + amount;
       }, 0);
 
       if (transaction.input.amount !== outputTotal) {

@@ -56,38 +56,35 @@ class Wallet {
   calculateBalance(blockchain) {
     let { balance } = this;
     const transactions = [];
+    blockchain.chain.forEach((block) =>
+      block.data.forEach((transaction) => {
+        transactions.push(transaction);
+      }),
+    );
 
-    blockchain.chain.forEach(({ data }) => {
-      transactions.push(...data);
-    });
-
-    // find transactions that have been made by this wallet
     const walletInputTs = transactions.filter(
-      ({ input }) => input.address === this.publicKey,
-    );
-    // reduce the transactions to the most recent one
-    const recentInputT = walletInputTs.reduce(
-      (prev, curr) =>
-        prev?.input?.timestamp > curr?.input?.timestamp ? prev : curr,
-      0,
+      (transaction) => transaction.input.address === this.publicKey,
     );
 
-    if (!recentInputT) {
-      return balance;
+    let startTime = 0;
+
+    if (walletInputTs.length > 0) {
+      const recentInputT = walletInputTs.reduce((prev, current) =>
+        prev.input.timestamp > current.input.timestamp ? prev : current,
+      );
+
+      balance = recentInputT.outputs.find(
+        (output) => output.address === this.publicKey,
+      ).amount;
+
+      startTime = recentInputT.input.timestamp;
     }
 
-    // calculate the balance
-    balance = recentInputT.outputs.find(
-      ({ address }) => address === this.publicKey,
-    ).amount;
-
-    const startTime = recentInputT.input.timestamp;
-
-    transactions.forEach(({ input, outputs }) => {
-      if (input.timestamp > startTime) {
-        outputs.forEach(({ address, amount }) => {
-          if (address === this.publicKey) {
-            balance += amount;
+    transactions.forEach((transaction) => {
+      if (transaction.input.timestamp > startTime) {
+        transaction.outputs.forEach((output) => {
+          if (output.address === this.publicKey) {
+            balance += output.amount;
           }
         });
       }
