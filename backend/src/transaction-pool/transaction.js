@@ -9,15 +9,6 @@ class Transaction {
     this.outputs = [];
   }
 
-  updateInput(senderWallet) {
-    this.input = {
-      timestamp: Date.now(),
-      amount: senderWallet.balance,
-      address: senderWallet.publicKey,
-      signature: senderWallet.sign(hashSHA256(this.outputs)),
-    };
-  }
-
   update({ senderWallet, recipient, amount }) {
     const senderOutput = this.outputs.find(
       ({ address }) => address === senderWallet.publicKey,
@@ -71,6 +62,15 @@ class Transaction {
         address: minerWallet.publicKey,
       },
     ]);
+  }
+
+  updateInput(senderWallet) {
+    this.input = {
+      timestamp: Date.now(),
+      amount: senderWallet.balance,
+      address: senderWallet.publicKey,
+      signature: senderWallet.sign(hashSHA256(this.outputs)),
+    };
   }
 
   static signTransaction(transaction, senderWallet) {

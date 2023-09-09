@@ -24,22 +24,21 @@ class TransactionPool {
 
   validTransactions() {
     return this.transactions.filter((transaction) => {
-      const outputTotal = transaction.outputs.reduce(
-        (total, { amount }) => total + amount,
-        0,
-      );
+      const outputTotal = transaction.outputs.reduce((total, { amount }) => {
+        return total + Number(amount);
+      }, 0);
 
       if (transaction.input.amount !== outputTotal) {
         console.log(`Invalid transaction from ${transaction.input.address}`);
-        return false;
+        return null;
       }
 
       if (!Transaction.verifyTransaction(transaction)) {
         console.log(`Invalid signature from ${transaction.input.address}`);
-        return false;
+        return null;
       }
 
-      return true;
+      return transaction;
     });
   }
 

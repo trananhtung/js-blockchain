@@ -41,9 +41,8 @@ class Wallet {
         recipient,
         amount,
       });
+      transactionPool.updateOrAddTransaction(transaction);
     }
-
-    transactionPool.updateOrAddTransaction(transaction);
 
     return transaction;
   }
@@ -69,7 +68,7 @@ class Wallet {
     // reduce the transactions to the most recent one
     const recentInputT = walletInputTs.reduce(
       (prev, curr) =>
-        prev.input.timestamp > curr.input.timestamp ? prev : curr,
+        prev?.input?.timestamp > curr?.input?.timestamp ? prev : curr,
       0,
     );
 
