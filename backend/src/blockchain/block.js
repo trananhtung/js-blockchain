@@ -1,5 +1,5 @@
 const { hashSHA256 } = require("../utils/hash");
-const { DIFFICULTY, MINE_RATE } = require("../config");
+const { DIFFICULTY, MINE_RATE } = require("../../config");
 
 class Block {
   constructor({ timestamp, lastHash, hash, data, nonce, difficulty }) {

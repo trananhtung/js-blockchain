@@ -1,6 +1,6 @@
-const { INITIAL_BALANCE } = require("../config");
+const Transaction = require("../transaction-pool/transaction");
+const { INITIAL_BALANCE } = require("../../config");
 const { generateKeyPair } = require("../utils/key");
-const Transaction = require("./transaction");
 
 class Wallet {
   constructor() {
@@ -41,8 +41,9 @@ class Wallet {
         recipient,
         amount,
       });
-      transactionPool.updateOrAddTransaction(transaction);
     }
+
+    transactionPool.updateOrAddTransaction(transaction);
 
     return transaction;
   }
@@ -53,7 +54,7 @@ class Wallet {
     return blockchainWallet;
   }
 
-  static calculateBalance(blockchain) {
+  calculateBalance(blockchain) {
     let { balance } = this;
     const transactions = [];
 

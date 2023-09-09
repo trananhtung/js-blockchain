@@ -9,8 +9,6 @@ const MESSAGE_TYPES = {
 const P2P_PORT = process.env.P2P_PORT || 5001;
 const peers = process.env.PEERS ? process.env.PEERS.split(",") : [];
 
-console.log(peers);
-
 class P2pServer {
   constructor(blockchain, transactionPool) {
     this.blockchain = blockchain;

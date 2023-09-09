@@ -1,4 +1,4 @@
-const Transaction = require("../wallet/transaction");
+const Transaction = require("../transaction-pool/transaction");
 const Wallet = require("../wallet");
 
 class Miner {
